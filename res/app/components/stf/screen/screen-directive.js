@@ -12,7 +12,7 @@ module.exports = function DeviceScreenDirective(
 ) {
   return {
     restrict: 'E'
-  , template: require('./screen.jade')
+  , template: require('./screen.pug')
   , scope: {
       control: '&'
     , device: '&'
@@ -383,7 +383,6 @@ module.exports = function DeviceScreenDirective(
             'letterboxed', parentAspect < canvasAspect)
         }
 
-        $window.addEventListener('beforeunload', stop, false)
         $window.addEventListener('resize', resizeListener, false)
         scope.$on('fa-pane-resize', resizeListener)
 
@@ -391,7 +390,6 @@ module.exports = function DeviceScreenDirective(
 
         scope.$on('$destroy', function() {
           stop()
-          $window.removeEventListener('beforeunload', stop, false)
           $window.removeEventListener('resize', resizeListener, false)
         })
       })()

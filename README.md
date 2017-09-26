@@ -6,17 +6,33 @@
 
 **STF** (or Smartphone Test Farm) is a web application for debugging smartphones, smartwatches and other gadgets remotely, from the comfort of your browser.
 
-It is currently being used at [CyberAgent](https://www.cyberagent.co.jp/en/) to control a growing collection of more than 160 devices.
+STF was originally developed at [CyberAgent](https://www.cyberagent.co.jp/en/) to control a growing collection of more than 160 devices. As of July 2016 development is mainly sponsored by [HeadSpin](https://performance.headspin.io/) and [other individual contributors](https://www.bountysource.com/teams/openstf).
+
+Please visit [our  BountySource](https://salt.bountysource.com/teams/openstf) if you'd like to support future development. How are your donations being used? Check out our [donation transparency report](DONATION-TRANSPARENCY.md).
 
 ![Close-up of device shelf](doc/shelf_closeup_790x.jpg?raw=true)
 
 ![Super short screencast showing usage](doc/7s_usage.gif?raw=true)
 
+## Sponsors
+
+### Gold Sponsor
+
+[<img src="doc/sponsors/headspin-wordmark-orange.png?raw=true" alt="HeadSpin" width="400">](https://performance.headspin.io/)
+
+> [HeadSpin](https://performance.headspin.io/) enables developers launch high quality and high performing apps Worldwide. Using HeadSpin’s global distributed device cloud infrastructure, developers can test and monitor their apps instantly on 1,500 global cell networks and local devices. HeadSpin seamlessly plugs into your development workflow with no code changes to your apps.
+
+HeadSpin offers a generous monthly contribution towards STF development.
+
+### How to become a sponsor
+
+Please [contact us][contact-link] for sponsor arrangements. Both recurring and one-time contributions are most welcome. Contributions towards a specific issue or feature are also possible, and can be attributed to your company in our release notes and other related materials. Hardware-only contributions, whether new or used, are also extremely helpful and well received, especially if you find a device that doesn't work. Please see our [donation transparency report](DONATION-TRANSPARENCY.md) for past hardware contributions.
+
 ## Features
 
 * OS support
   - Android
-    * Supports versions 2.3.3 (SDK level 10) to 6.0 (SDK level 23)
+    * Supports versions 2.3.3 (SDK level 10) to 8.0 (SDK level 26)
     * Supports Wear 5.1 (but not 5.0 due to missing permissions)
     * Supports Fire OS, CyanogenMod, and other heavily Android based distributions
     * `root` is **not** required for any current functionality
@@ -53,27 +69,23 @@ It is currently being used at [CyberAgent](https://www.cyberagent.co.jp/en/) to 
   - Rudimentary Play Store account management
     * List, remove and add new accounts (adding may not work on all devices)
   - Display hardware specs
+* Simple REST [API](doc/API.md)
 
 ## Status
 
-STF is in continued, active development, but as of late 2015 the team is operating mostly on their private time and funds. While normal for many open source projects, STF is quite heavy on the hardware side, and is therefore somewhat of a money sink. [Contact us][contact-link] if you'd like to support future development or even become our next sponsor.
+STF is in continued, active development, but development is still largely funded by individual team members and their unpaid free time, leading to slow progress. While normal for many open source projects, STF is quite heavy on the hardware side, and is therefore somewhat of a money sink. See [how to become a sponsor](#how-to-become-a-sponsor) if you or your company would like to support future development.
 
-We're also actively working to expand the team. Welcome **@vbanthia** as our newest full contributor!
+We're also actively working to expand the team, don't be afraid to ask if you're interested.
 
 ### Short term goals
 
 Here are some things we are planning to address ASAP.
 
-1. Properly expose the new VNC functionality in the UI
-2. Implement a basic REST API for programmatically using devices
+1. Performance
+2. Properly expose the new VNC functionality in the UI
 3. Properly reset user data between uses (Android 4.0+)
 4. Automated scheduled restarts for devices
-
-### Sponsors wanted
-
-Is your company (or you!) a heavy user of STF? Consider becoming a hardware sponsor. If you find a device that doesn't work, or would simply like to ensure support for a new model, [send it to us][contact-link]! While we can't guarantee a fix, we can promise that someone will take a detailed look into what's going on with your device, and fix it when possible. For difficult cases you may need to use our [consulting services](#consulting-services) instead.
-
-You can also sponsor a feature or bug fix and get it attributed to you or your company in the release notes.
+5. More!
 
 ### Consulting services
 
@@ -87,7 +99,7 @@ As the product has evolved from an internal tool running in our internal network
 
 ## Requirements
 
-* [Node.js](https://nodejs.org/) >= 0.12
+* [Node.js](https://nodejs.org/) >= 6.9 (latest stable version preferred)
 * [ADB](http://developer.android.com/tools/help/adb.html) properly set up
 * [RethinkDB](http://rethinkdb.com/) >= 2.2
 * [GraphicsMagick](http://www.graphicsmagick.org/) (for resizing screenshots)
@@ -152,6 +164,8 @@ If you don't have RethinkDB set up yet, to start it up, go to the folder where y
 rethinkdb
 ```
 
+_Note: if it takes a long time for RethinkDB to start up, you may be running into [rethinkdb/rethinkdb#4600](https://github.com/rethinkdb/rethinkdb/issues/4600) (or [rethinkdb/rethinkdb#6047](https://github.com/rethinkdb/rethinkdb/issues/6047)). This usually happens on macOS Sierra. To fix this on macOS, first run `scutil --get HostName` to check if the HostName variable is unset. RethinkDB needs it to generate a server name for your instance. If you find that it's empty, running `sudo scutil --set HostName $(hostname)` has been confirmed to fix the issue on at least one occasion. See the issues for more complete solutions._
+
 You should now have RethinkDB running locally. Running the command again in the same folder will reuse the data from the previous session.
 
 You're now ready to start up STF itself:
@@ -182,11 +196,11 @@ Yes, see [DEPLOYMENT.md](doc/DEPLOYMENT.md) and [Setup Examples](https://github.
 
 ### Will I have to change battery packs all the time?
 
-Nope, we've had many devices running since the initial prototype phase about two years ago, and we've only had a single incident so far. The battery expanded causing the casing to split from the seams. The device itself was working fine and reporting full battery health, but it was discarded due to safety reasons.
+No, not all the time. Aside from a single early failure we had within only a few months, all of our devices were doing fine for about two years. However, having reached the 2-3 year mark, several devices have started to experience visibly expanded batteries. Expanded batteries should be replaced as soon as possible. Note that this issue isn't specific to STF, it's just what happens over time. You should be prepared to replace the batteries every now and then. In any case, we consider 2 years per battery pack to be fairly good value for a device lab.
 
-Devices should be allowed to turn their screens off when idle, which is what we are doing. All of our devices report perfect battery health so far.
+You should set up your devices so that the display is allowed to turn off entirely after a short timeout. 30 seconds or so should do just fine, STF will wake it up when necessary. Otherwise you risk reducing the lifetime of your device.
 
-Note that you may have a problem if your USB hubs are unable to both provide enough power and support the data connection at the same time. This can cause a device to stop charging when being used, resulting in many charging cycles. If this happens you will just need to [get a better USB hub](#recommended-hardware).
+Note that you may have a problem if your USB hubs are unable to both provide enough power for charging and support a data connection at the same time (data connections require power, too). This can cause a device to stop charging when being used, resulting in many charging cycles. If this happens you will just need to [get a better USB hub](#recommended-hardware).
 
 ### Is the system secure?
 
@@ -390,6 +404,11 @@ It will do the following:
 4. Pull from Transifex all `po` translations.
 5. Compile all `po` files to `json`.
 
+Then in order to add it officially (only needs to be done once):
+
+1. Add the language to `res/common/lang/langs.json`.
+2. Pull the specific language `tx pull -l <lang>`.
+3. Run `gulp translate`.
 
 ## Testing
 
@@ -403,6 +422,6 @@ See [CONTRIBUTING.md](CONTRIBUTING.md).
 
 See [LICENSE](LICENSE).
 
-Copyright © CyberAgent, Inc. All Rights Reserved.
+Copyright © 2017 The OpenSTF Project. All Rights Reserved.
 
 [contact-link]: mailto:contact@openstf.io

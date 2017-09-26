@@ -56,7 +56,7 @@ module.exports = {
         , {test: /\.otf/, loader: 'url?limit=1&mimetype=application/font-woff'}
         , {test: /\.ttf/, loader: 'url?limit=1&mimetype=application/font-woff'}
         , {test: /\.eot/, loader: 'url?limit=1&mimetype=vnd.ms-fontobject'}
-        , {test: /\.jade$/, loader: 'template-html-loader'}
+        , {test: /\.pug$/, loader: 'template-html-loader?engine=jade'}
         , {test: /\.html$/, loader: 'html-loader'}
         , {test: /angular\.js$/, loader: 'exports?angular'}
         , {test: /angular-cookies\.js$/, loader: 'imports?angular=angular'}
@@ -64,7 +64,6 @@ module.exports = {
         , {test: /angular-touch\.js$/, loader: 'imports?angular=angular'}
         , {test: /angular-animate\.js$/, loader: 'imports?angular=angular'}
         , {test: /angular-growl\.js$/, loader: 'imports?angular=angular'}
-        , {test: /uuid\.js$/, loader: 'imports?require=>undefined'}
         , {test: /dialogs\.js$/, loader: 'script'}
       ]
       // TODO: enable when its sane
